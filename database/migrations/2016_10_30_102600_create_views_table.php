@@ -18,6 +18,7 @@ class CreateViewsTable extends Migration
             $table->integer('viewable_id')->unsigned()->index();
             $table->string('viewable_type', 50);
             $table->integer('view_count')->default(0);
+            $table->timestamps();
         });
     }
 

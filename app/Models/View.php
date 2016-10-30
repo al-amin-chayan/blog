@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class View extends Model
 {
-    
-    public $timestamps = false;
-    
+        
     /**
      * The attributes that are mass assignable.
      *
@@ -16,6 +14,15 @@ class View extends Model
      */
     protected $fillable = [
         'view_count'
+    ];
+    
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'id', 'created_at', 'updated_at',
     ];
     
     /**
