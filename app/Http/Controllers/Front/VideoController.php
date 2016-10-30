@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
-use App\Http\Controllers\FrontController;
+use App\Http\Controllers\Front\FrontController AS Controller;
 use App\Models\Tag;
 use App\Models\Gallery;
 use App\Models\Video;
@@ -12,7 +12,7 @@ use Session;
 use Redirect;
 use URL;
 
-class VideoController extends FrontController {
+class VideoController extends Controller {
 
     public function show($id) {
         $video = Video::with([

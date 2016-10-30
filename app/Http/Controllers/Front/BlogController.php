@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\CommentRequest;
-use App\Http\Controllers\FrontController;
+use App\Http\Controllers\Front\FrontController AS Controller;
 use App\Models\Profession;
 use App\Models\Subject;
 use App\Models\Tag;
@@ -14,7 +14,7 @@ use Session;
 use Redirect;
 use URL;
 
-class BlogController extends FrontController {
+class BlogController extends Controller {
 
     public function home() {
         $articles = Article::where('display', 'Y')->orderBy('created_at', 'desc')->paginate(5);
