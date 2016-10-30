@@ -88,4 +88,12 @@ class Tag extends Model
     {
         return $this->morphedByMany('App\Models\Video', 'taggable');
     }
+    
+    /**
+     * Get all of the views.
+     */
+    public function views()
+    {
+        return $this->morphMany('App\Models\View', 'viewable');
+    }
 }

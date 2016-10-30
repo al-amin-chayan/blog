@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\CommentRequest;
 use App\Http\Controllers\Front\FrontController AS Controller;
@@ -22,6 +22,12 @@ class VideoController extends Controller {
             }, 'comments.user', 'comments.user.profile'
         ])->where('display', 'Y')
           ->find($id);
+            
+        if ($video->views()->exists()) {
+            $video->views()->increment('view_count');
+        } else {
+            $video->views()->create(['view_count' => 1]);
+        }
         $data = [
             'title' => $video->title,
             'video' => $video
@@ -34,6 +40,12 @@ class VideoController extends Controller {
             $query->where('videos.display', '=', 'Y')
                     ->orderBy('videos.created_at', 'desc');
         })->findOrFail($id);
+        
+        if ($gallery->views()->exists()) {
+            $gallery->views()->increment('view_count');
+        } else {
+            $gallery->views()->create(['view_count' => 1]);
+        }
         $data = [
             'title' => $gallery->name,
             'videos' => $gallery->videos()->paginate(3),
@@ -48,6 +60,13 @@ class VideoController extends Controller {
             $query->where('display', 'Y')
                     ->orderBy('created_at', 'desc');
         })->findOrFail($id);
+        
+        if ($tag->views()->exists()) {
+            $tag->views()->increment('view_count');
+        } else {
+            $tag->views()->create(['view_count' => 1]);
+        }
+        
         $data = [
             'title' => $tag->name,
             'videos' => $tag->videos()->paginate(3)

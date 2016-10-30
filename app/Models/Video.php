@@ -57,4 +57,12 @@ class Video extends Model
     {
         return $this->morphMany('App\Models\Comment', 'commentable');
     }
+    
+    /**
+     * Get all of the views.
+     */
+    public function views()
+    {
+        return $this->morphMany('App\Models\View', 'viewable');
+    }
 }

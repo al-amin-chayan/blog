@@ -23,4 +23,11 @@ class Gallery extends Model
         return $this->belongsToMany('App\Models\Video');
     }
 
+    /**
+     * Get all of the views.
+     */
+    public function views()
+    {
+        return $this->morphMany('App\Models\View', 'viewable');
+    }
 }

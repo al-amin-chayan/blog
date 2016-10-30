@@ -28,13 +28,19 @@ class BlogController extends Controller {
 
     public function post($id, $slug = NULL) {
         $article = Article::with([
-            'comments' => function ($query) {
-                $query->where('display', 'Y')
+                    'comments' => function ($query) {
+                        $query->where('display', 'Y')
                         ->orderBy('comments.created_at', 'desc');
-            }, 'comments.user', 'comments.user.profile'
-        ])->where('display', 'Y')
-          ->find($id);
-        //$article->increment('');
+                    }, 'comments.user', 'comments.user.profile'
+                ])->where('display', 'Y')
+                ->find($id);
+
+        if ($article->views()->exists()) {
+            $article->views()->increment('view_count');
+        } else {
+            $article->views()->create(['view_count' => 1]);
+        }
+        
         $data = [
             'title' => 'My blog',
             'sub_title' => '',
@@ -48,6 +54,12 @@ class BlogController extends Controller {
                     $query->where('display', 'Y')
                             ->orderBy('articles.created_at', 'desc');
                 })->findOrFail($id);
+                
+        if ($profession->views()->exists()) {
+            $profession->views()->increment('view_count');
+        } else {
+            $profession->views()->create(['view_count' => 1]);
+        }
         $data = [
             'title' => $profession->name,
             'sub_title' => '',
@@ -62,6 +74,12 @@ class BlogController extends Controller {
                     $query->where('display', 'Y')
                             ->orderBy('articles.created_at', 'desc');
                 })->findOrFail($id);
+                
+        if ($subject->views()->exists()) {
+            $subject->views()->increment('view_count');
+        } else {
+            $subject->views()->create(['view_count' => 1]);
+        }
         $data = [
             'title' => $subject->name,
             'sub_title' => '',
@@ -73,10 +91,15 @@ class BlogController extends Controller {
 
     public function user($id) {
         $user = User::whereHas('articles', function ($query) {
-            $query->where('display', 'Y')
-                    ->orderBy('articles.created_at', 'desc');
-        })->findOrFail($id);
+                    $query->where('display', 'Y')
+                            ->orderBy('articles.created_at', 'desc');
+                })->findOrFail($id);
 
+        if ($user->views()->exists()) {
+            $user->views()->increment('view_count');
+        } else {
+            $user->views()->create(['view_count' => 1]);
+        }
         $data = [
             'title' => $user->name,
             'sub_title' => '',
@@ -85,12 +108,17 @@ class BlogController extends Controller {
         return view('blog.list', $data);
     }
 
-    public function tag($id, $slug = NULL)
-    {
+    public function tag($id, $slug = NULL) {
         $tag = Tag::whereHas('articles', function ($query) {
-            $query->where('display', 'Y')
-                    ->orderBy('articles.created_at', 'desc');
-        })->findOrFail($id);
+                    $query->where('display', 'Y')
+                            ->orderBy('articles.created_at', 'desc');
+                })->findOrFail($id);
+                
+        if ($tag->views()->exists()) {
+            $tag->views()->increment('view_count');
+        } else {
+            $tag->views()->create(['view_count' => 1]);
+        }
         $data = [
             'title' => $tag->name,
             'sub_title' => '',
@@ -98,29 +126,29 @@ class BlogController extends Controller {
         ];
         return view('blog.list', $data);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  CommentRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function comment(CommentRequest $request)
-    {
+    public function comment(CommentRequest $request) {
         try {
             $article_id = $request->input('article_id');
             $article = Article::where('display', 'Y')->findOrFail($article_id);
-            
+
             $comment = new Comment();
             $comment->details = $request->input('details');
-            
+
             $article->comments()->save($comment);
             Session::flash('message', 'Comment added!');
             return Redirect::to(URL::previous() . "#comments");
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()
-                ->withErrors($e->getMessage())
-                ->withInput();
+                            ->withErrors($e->getMessage())
+                            ->withInput();
         }
     }
+
 }

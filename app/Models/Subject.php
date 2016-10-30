@@ -80,4 +80,12 @@ class Subject extends Model
     {
         return $this->hasMany('App\Models\Article');
     }
+    
+    /**
+     * Get all of the views.
+     */
+    public function views()
+    {
+        return $this->morphMany('App\Models\View', 'viewable');
+    }
 }

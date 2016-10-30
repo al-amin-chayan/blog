@@ -37,4 +37,12 @@ class Profession extends Model
     {
         return $this->hasManyThrough('App\Models\Article', 'App\Models\User');
     }
+    
+    /**
+     * Get all of the views.
+     */
+    public function views()
+    {
+        return $this->morphMany('App\Models\View', 'viewable');
+    }
 }

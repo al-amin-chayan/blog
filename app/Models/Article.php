@@ -82,10 +82,18 @@ class Article extends Model
     }
 
     /**
-     * Get all of the post's comments.
+     * Get all of the article's comments.
      */
     public function comments()
     {
         return $this->morphMany('App\Models\Comment', 'commentable');
+    }
+    
+    /**
+     * Get all of the views.
+     */
+    public function views()
+    {
+        return $this->morphMany('App\Models\View', 'viewable');
     }
 }
