@@ -38,6 +38,12 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
+        $images = glob(public_path('uploads/article-image/') . '*.*');
+        foreach($images as $file) {
+            if(is_file($file)) {
+                @unlink($file);
+            }
+        }
         Schema::dropIfExists('articles');
     }
 }

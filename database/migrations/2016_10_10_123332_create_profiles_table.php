@@ -36,6 +36,12 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
+        $images = glob(public_path('uploads/profile-picture/') . '*.*');
+        foreach($images as $file) {
+            if(is_file($file)) {
+                @unlink($file);
+            }
+        }
         Schema::dropIfExists('profiles');
     }
 }
