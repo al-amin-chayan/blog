@@ -13,6 +13,8 @@ use App\Models\Comment;
 use Session;
 use Redirect;
 use URL;
+use App\Events\PageView;
+use Event;
 
 class BlogController extends Controller {
 
@@ -35,11 +37,7 @@ class BlogController extends Controller {
                 ])->where('display', 'Y')
                 ->find($id);
 
-        if ($article->views()->exists()) {
-            $article->views()->increment('view_count');
-        } else {
-            $article->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($article));
         
         $data = [
             'title' => 'My blog',
@@ -55,11 +53,7 @@ class BlogController extends Controller {
                             ->orderBy('articles.created_at', 'desc');
                 })->findOrFail($id);
                 
-        if ($profession->views()->exists()) {
-            $profession->views()->increment('view_count');
-        } else {
-            $profession->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($profession));
         $data = [
             'title' => $profession->name,
             'sub_title' => '',
@@ -75,11 +69,7 @@ class BlogController extends Controller {
                             ->orderBy('articles.created_at', 'desc');
                 })->findOrFail($id);
                 
-        if ($subject->views()->exists()) {
-            $subject->views()->increment('view_count');
-        } else {
-            $subject->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($subject));
         $data = [
             'title' => $subject->name,
             'sub_title' => '',
@@ -95,11 +85,7 @@ class BlogController extends Controller {
                             ->orderBy('articles.created_at', 'desc');
                 })->findOrFail($id);
 
-        if ($user->views()->exists()) {
-            $user->views()->increment('view_count');
-        } else {
-            $user->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($user));
         $data = [
             'title' => $user->name,
             'sub_title' => '',
@@ -114,11 +100,7 @@ class BlogController extends Controller {
                             ->orderBy('articles.created_at', 'desc');
                 })->findOrFail($id);
                 
-        if ($tag->views()->exists()) {
-            $tag->views()->increment('view_count');
-        } else {
-            $tag->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($tag));
         $data = [
             'title' => $tag->name,
             'sub_title' => '',

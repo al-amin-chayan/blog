@@ -11,6 +11,8 @@ use App\Models\Comment;
 use Session;
 use Redirect;
 use URL;
+use App\Events\PageView;
+use Event;
 
 class VideoController extends Controller {
 
@@ -23,11 +25,7 @@ class VideoController extends Controller {
         ])->where('display', 'Y')
           ->find($id);
             
-        if ($video->views()->exists()) {
-            $video->views()->increment('view_count');
-        } else {
-            $video->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($video));
         $data = [
             'title' => $video->title,
             'video' => $video
@@ -41,11 +39,7 @@ class VideoController extends Controller {
                     ->orderBy('videos.created_at', 'desc');
         })->findOrFail($id);
         
-        if ($gallery->views()->exists()) {
-            $gallery->views()->increment('view_count');
-        } else {
-            $gallery->views()->create(['view_count' => 1]);
-        }
+        Event::fire(new PageView($gallery));
         $data = [
             'title' => $gallery->name,
             'videos' => $gallery->videos()->paginate(3),
@@ -61,12 +55,7 @@ class VideoController extends Controller {
                     ->orderBy('created_at', 'desc');
         })->findOrFail($id);
         
-        if ($tag->views()->exists()) {
-            $tag->views()->increment('view_count');
-        } else {
-            $tag->views()->create(['view_count' => 1]);
-        }
-        
+        Event::fire(new PageView($tag));
         $data = [
             'title' => $tag->name,
             'videos' => $tag->videos()->paginate(3)
