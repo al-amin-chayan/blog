@@ -139,7 +139,8 @@ class UsersController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param  User $user
-     * @return \Illuminate\Http\Response
+     *
+     * @return void
      */
     public function destroy(User $user) {
         try {
@@ -147,9 +148,63 @@ class UsersController extends Controller {
             $user->delete();
             Session::flash('message', $name . ' deleted!');
             return redirect('admin/users');
+
         } catch (Exception $e) {
             return redirect()->back()
                             ->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Display a listing of the trash resource.
+     *
+     * @return void
+     */
+    public function trash()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('admin.users.trash', compact('users'));
+    }
+
+    /**
+     * Restore the specified resource from trash.
+     *
+     * @param  int  $id
+     *
+     * @return void
+     */
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        try {
+            $name = $user->name;
+            $user->restore();
+            Session::flash('message', $name . ' restored!');
+            return redirect('admin/users/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Permanently Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     *
+     * @return void
+     */
+    public function clean($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        try {
+            $name = $user->name;
+            $user->forceDelete();
+            Session::flash('message', $name . ' deleted!');
+            return redirect('admin/users/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
         }
     }
 

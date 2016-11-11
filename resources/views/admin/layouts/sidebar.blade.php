@@ -6,18 +6,6 @@
                 <a href="{{ url('/admin') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-user fa-fw"></i> User<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="{{ url('/admin/users') }}">View</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/admin/users/create') }}">Add New</a>
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
-            </li>
-            <li>
                 <a href="#"><i class="fa fa-suitcase fa-fw"></i> Profession<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -89,6 +77,47 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            @if (Auth::user()->isAdministrator())
+                <li>
+                    <a href="#"><i class="fa fa-user fa-fw"></i> User<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ url('/admin/users') }}">View</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/users/create') }}">Create</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/users/trash') }}">Trash</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-trash fa-fw"></i> Trash<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ url('/admin/subjects/trash') }}">Subject</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/tags/trash') }}">Tag</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/galleries/trash') }}">Gallery</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/videos/trash') }}">Video</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/articles/trash') }}">Article</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/professions/trash') }}">Trash</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+            @endif
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

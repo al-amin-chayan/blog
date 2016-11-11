@@ -110,4 +110,57 @@ class ProfessionsController extends Controller
                 ->withErrors($e->getMessage());
         }
     }
+    
+    /**
+     * Display a listing of the trash resource.
+     *
+     * @return void
+     */
+    public function trash()
+    {
+        $types = UserType::onlyTrashed()->get();
+        return view('admin.professions.trash', compact('types'));
+    }
+
+    /**
+     * Restore the specified resource from trash.
+     *
+     * @param  int  $id
+     *
+     * @return void
+     */
+    public function restore($id)
+    {
+        $type = UserType::withTrashed()->findOrFail($id);
+        try {
+            $type_name = $type->type;
+            $type->restore();
+            Session::flash('message', $type_name . ' restored!');
+            return redirect('admin/professions/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Permanently Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     *
+     * @return void
+     */
+    public function clean($id)
+    {
+        $type = UserType::withTrashed()->findOrFail($id);
+        try {
+            $type_name = $type->type;
+            $type->forceDelete();
+            Session::flash('message', $type_name . ' deleted!');
+            return redirect('admin/professions/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
 }

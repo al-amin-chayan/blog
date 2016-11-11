@@ -4,20 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TagRequest;
 use App\Http\Controllers\Admin\AdminController AS Controller;
-
 use App\Models\Tag;
 use Illuminate\Database\QueryException as Exception;
 use Session;
 
-class TagsController extends Controller
-{
+class TagsController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return void
      */
-    public function index()
-    {
+    public function index() {
         $tags = Tag::all();
         return view('admin.tags.index', compact('tags'));
     }
@@ -27,8 +25,7 @@ class TagsController extends Controller
      *
      * @return void
      */
-    public function create()
-    {
+    public function create() {
         return view('admin.tags.create');
     }
 
@@ -39,8 +36,7 @@ class TagsController extends Controller
      *
      * @return void
      */
-    public function store(TagRequest $request)
-    {
+    public function store(TagRequest $request) {
         try {
             $data = $request->only('name');
             Tag::create($data);
@@ -49,8 +45,8 @@ class TagsController extends Controller
         } catch (Exception $e) {
 
             return redirect()->back()
-                ->withErrors($e->getMessage())
-                ->withInput();
+                            ->withErrors($e->getMessage())
+                            ->withInput();
         }
     }
 
@@ -61,8 +57,7 @@ class TagsController extends Controller
      *
      * @return void
      */
-    public function edit(Tag $tag)
-    {
+    public function edit(Tag $tag) {
         return view('admin.tags.edit', compact('tag'));
     }
 
@@ -75,8 +70,7 @@ class TagsController extends Controller
      *
      * @return void
      */
-    public function update(Tag $tag, TagRequest $request)
-    {
+    public function update(Tag $tag, TagRequest $request) {
         try {
             $data = $request->only('name');
             $tag->update($data);
@@ -84,8 +78,8 @@ class TagsController extends Controller
             return redirect('admin/tags');
         } catch (Exception $e) {
             return redirect()->back()
-                ->withErrors($e->getMessage())
-                ->withInput();
+                            ->withErrors($e->getMessage())
+                            ->withInput();
         }
     }
 
@@ -96,8 +90,7 @@ class TagsController extends Controller
      *
      * @return void
      */
-    public function destroy(Tag $tag)
-    {
+    public function destroy(Tag $tag) {
         try {
             $tag->delete();
             $name = $tag->name;
@@ -105,7 +98,58 @@ class TagsController extends Controller
             return redirect('admin/tags');
         } catch (Exception $e) {
             return redirect()->back()
-                ->withErrors($e->getMessage());
+                            ->withErrors($e->getMessage());
         }
     }
+
+    /**
+     * Display a listing of the trash resource.
+     *
+     * @return void
+     */
+    public function trash() {
+        $tags = Tag::onlyTrashed()->get();
+        return view('admin.tags.trash', compact('tags'));
+    }
+
+    /**
+     * Restore the specified resource from trash.
+     *
+     * @param  int  $id
+     *
+     * @return void
+     */
+    public function restore($id) {
+        $tag = Tag::withTrashed()->where('id', $id)->firstOrFail();
+        try {
+            $name = $tag->name;
+            $tag->restore();
+            Session::flash('message', $name . ' restored!');
+            return redirect('admin/tags/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                            ->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Permanently Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     *
+     * @return void
+     */
+    public function clean($id) {
+        $tag = Tag::withTrashed()->where('id', $id)->firstOrFail();
+        try {
+            $name = $tag->name;
+            $tag->forceDelete();
+            Session::flash('message', $name . ' deleted!');
+            return redirect('admin/tags/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                            ->withErrors($e->getMessage());
+        }
+    }
+
 }

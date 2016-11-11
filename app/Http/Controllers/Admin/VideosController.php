@@ -145,4 +145,56 @@ class VideosController extends Controller
         }
     }
 
+    /**
+     * Display a listing of the trash resource.
+     *
+     * @return void
+     */
+    public function trash()
+    {
+        $videos = Video::onlyTrashed()->paginate(15);
+        return view('admin.videos.trash', compact('videos'));
+}
+
+    /**
+     * Restore the specified resource from trash.
+     *
+     * @param  int $id
+     *
+     * @return void
+     */
+    public function restore($id)
+    {
+        $video = Video::withTrashed()->findOrFail($id);
+        try {
+            $title = $video->title;
+            $video->restore();
+            Session::flash('message', $title . ' has been restored.');
+            return redirect('admin/videos/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Permanently Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return void
+     */
+    public function clean($id)
+    {
+        $video = Video::withTrashed()->findOrFail($id);
+        try {
+            $title = $video->title;
+            $video->forceDelete();
+            Session::flash('message', $title . ' has been deleted.');
+            return redirect('admin/videos/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
 }

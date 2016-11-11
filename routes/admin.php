@@ -49,7 +49,34 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('password', 'UsersController@password');
     Route::patch('update-password', 'UsersController@updatePassword');
 
-    Route::resource('users', 'UsersController');
+    //--------Route Group with some Administrative Privileges-----------------
+    Route::group(['middleware' => 'administrator'], function() {
+        Route::get('professions/trash', 'ProfessionsController@trash');
+        Route::post('professions/clean/{id}', 'ProfessionsController@clean');
+        Route::post('professions/restore/{id}', 'ProfessionsController@restore');
+
+        Route::get('users/trash', 'UsersController@trash');
+        Route::post('users/clean/{id}', 'UsersController@clean');
+        Route::post('users/restore/{id}', 'UsersController@restore');
+        Route::resource('users', 'UsersController');
+
+        Route::get('tags/trash', 'TagsController@trash');
+        Route::post('tags/clean/{id}', 'TagsController@clean');
+        Route::post('tags/restore/{id}', 'TagsController@restore');
+
+        Route::get('subjects/trash', 'SubjectsController@trash');
+        Route::post('subjects/clean/{id}', 'SubjectsController@clean');
+        Route::post('subjects/restore/{id}', 'SubjectsController@restore');
+
+        Route::get('galleries/trash', 'GalleriesController@trash');
+        Route::post('galleries/clean/{id}', 'GalleriesController@clean');
+        Route::post('galleries/restore/{id}', 'GalleriesController@restore');
+
+        Route::get('videos/trash', 'VideosController@trash');
+        Route::post('videos/clean/{id}', 'VideosController@clean');
+        Route::post('videos/restore/{id}', 'VideosController@restore');
+    });
+
     Route::get('professions/users/{profession}', 'ProfessionsController@users');
     Route::resource('professions', 'ProfessionsController', ['except' => ['show']]);
     Route::resource('galleries', 'GalleriesController');
