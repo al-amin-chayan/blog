@@ -55,6 +55,12 @@ class Subject extends Model
                 $subject->save();
             }
         });
+
+        static::restoring(function($subject)
+        {
+            $subject->deleted_by = null;
+            $subject->save();
+        });
     }
 
     /**

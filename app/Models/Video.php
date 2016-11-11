@@ -32,7 +32,6 @@ class Video extends Model
      */
     protected $dates = ['deleted_at'];
 
-
     /**
      * The galleries that belong to the video.
      */

@@ -55,6 +55,12 @@ class Tag extends Model
                 $tag->save();
             }
         });
+
+        static::restoring(function($tag)
+        {
+            $tag->deleted_by = null;
+            $tag->save();
+        });
     }
 
     /**

@@ -40,6 +40,14 @@ class User extends Authenticatable
     }
     
     /**
+     * Check the administrative privilege of the user.
+     */
+    public function isAdministrator()
+    {
+        return $this->id === 1 ? true : false;
+    }
+    
+    /**
      * Get the profile record associated with the user.
      */
     public function profile()
