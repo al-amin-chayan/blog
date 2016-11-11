@@ -112,7 +112,7 @@
                             <a href="{{ url('/admin/articles/trash') }}">Article</a>
                         </li>
                         <li>
-                            <a href="{{ url('/admin/professions/trash') }}">Trash</a>
+                            <a href="{{ url('/admin/professions/trash') }}">Profession</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
