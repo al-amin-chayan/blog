@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use View;
 
 class AdminController extends Controller
 {
-    //Another Layer to share Admin specific Data
+    public function __construct() {
+
+        View::share('layouts', 'admin.layouts.app');
+    }
 }

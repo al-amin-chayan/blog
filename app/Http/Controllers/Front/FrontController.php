@@ -19,15 +19,7 @@ class FrontController extends Controller {
          * used within any of the views, think of it like a global variable.
          * It simply sets a variable
          */     
-        //View::share('galleries', $this->getGalleries());
-
-        /*
-         * View::composer registers an event which is called when the view is rendered
-         * It is a callback function.
-         */
-        View::composer('layouts.sidebar', function ($view) {
-            $view->with('galleries', $this->getGalleries());
-        });
+        View::share('galleries', $this->getGalleries());
     }
 
     private function setGalleries() {
