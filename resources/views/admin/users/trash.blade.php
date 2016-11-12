@@ -27,7 +27,7 @@
                             <tr>
                                 <th>S.No</th>
                                 <th> {{ trans('users.name') }} </th>
-                                <th> {{ trans('users.user_type_id') }} </th>
+                                <th> {{ trans('users.profession_id') }} </th>
                                 <th> {{ trans('common.created_at') }} </th>
                                 <th> {{ trans('common.updated_at') }} </th>
                                 <th> {{ trans('common.deleted_at') }} </th>
@@ -35,13 +35,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{-- */$x=0;/* --}}
+                            @php $x=1; @endphp
                             @foreach($users as $item)
-                                {{-- */$x++;/* --}}
                                 <tr class="{{ $x%2 == 0 ? 'even' : 'odd'}} gradeA">
-                                    <td>{{ $x }}</td>
+                                    <td>{{ $x++ }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->user_type->type }}</td>
+                                    <td>{{ $item->profession->name }}</td>
                                     <td>{{ $item->created_at->toDayDateTimeString() }}</td>
                                     <td>{{ $item->updated_at->format('M j, Y, g:ia') }}</td>
                                     <td>{{ $item->deleted_at->diffForHumans() }}</td>

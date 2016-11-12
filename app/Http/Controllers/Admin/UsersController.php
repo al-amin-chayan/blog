@@ -199,6 +199,7 @@ class UsersController extends Controller {
         $user = User::withTrashed()->findOrFail($id);
         try {
             $name = $user->name;
+            $user->views()->delete();
             $user->forceDelete();
             Session::flash('message', $name . ' deleted!');
             return redirect('admin/users/trash');

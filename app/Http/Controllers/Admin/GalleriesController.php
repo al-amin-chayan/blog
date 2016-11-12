@@ -170,6 +170,7 @@ class GalleriesController extends Controller {
         $gallery = Gallery::withTrashed()->findOrFail($id);
         try {
             $name = $gallery->name;
+            $gallery->views()->delete();
             $gallery->forceDelete();
             Session::flash('message', $name . ' has been deleted.');
             return redirect('admin/galleries/trash');

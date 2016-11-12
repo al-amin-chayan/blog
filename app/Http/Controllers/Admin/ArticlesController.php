@@ -196,4 +196,57 @@ class ArticlesController extends Controller
             @unlink(public_path() . self::UPLOAD_DIR . $img);
         }
     }
+
+    /**
+     * Display a listing of the trash resource.
+     *
+     * @return void
+     */
+    public function trash() {
+        $articles = Article::onlyTrashed()->paginate(15);
+        return view('admin.articles.trash', compact('articles'));
+    }
+
+    /**
+     * Restore the specified resource from trash.
+     *
+     * @param  int $id
+     *
+     * @return void
+     */
+    public function restore($id) {
+        $article = Article::withTrashed()->findOrFail($id);
+        try {
+            $title = $article->title;
+            $article->restore();
+            Session::flash('message', $title . ' has been restored.');
+            return redirect('admin/articles/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Permanently Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return void
+     */
+    public function clean($id) {
+        $article = Article::withTrashed()->findOrFail($id);
+        try {
+            $title = $article->title;
+            $this->unlinkImage($article->image);
+            $article->tags()->detach();
+            $article->views()->delete();
+            $article->forceDelete();
+            Session::flash('message', $title . ' has been deleted.');
+            return redirect('admin/articles/trash');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage());
+        }
+    }
 }

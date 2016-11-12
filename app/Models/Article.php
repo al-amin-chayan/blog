@@ -31,7 +31,7 @@ class Article extends Model
      *
      * @var array
      */
-    //protected $dates = [ 'created_at', 'deleted_at'];
+    protected $dates = [ 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * Boot function for using with User Events

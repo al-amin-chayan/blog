@@ -36,11 +36,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{-- */$x=0;/* --}}
+                            @php $x=1; @endphp
                             @foreach($tags as $item)
-                                {{-- */$x++;/* --}}
                                 <tr class="{{ $x%2 == 0 ? 'even' : 'odd'}} gradeA">
-                                    <td>{{ $x }}</td>
+                                    <td>{{ $x++ }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->creator->name }}</td>
                                     <td>{{ $item->remover->name }}</td>

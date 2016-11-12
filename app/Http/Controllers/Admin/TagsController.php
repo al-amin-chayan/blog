@@ -143,6 +143,7 @@ class TagsController extends Controller {
         $tag = Tag::withTrashed()->where('id', $id)->firstOrFail();
         try {
             $name = $tag->name;
+            $tag->views()->delete();
             $tag->forceDelete();
             Session::flash('message', $name . ' deleted!');
             return redirect('admin/tags/trash');

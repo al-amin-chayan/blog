@@ -154,7 +154,7 @@ class VideosController extends Controller
     {
         $videos = Video::onlyTrashed()->paginate(15);
         return view('admin.videos.trash', compact('videos'));
-}
+    }
 
     /**
      * Restore the specified resource from trash.
@@ -189,6 +189,8 @@ class VideosController extends Controller
         $video = Video::withTrashed()->findOrFail($id);
         try {
             $title = $video->title;
+            $video->tags()->detach();
+            $video->views()->delete();
             $video->forceDelete();
             Session::flash('message', $title . ' has been deleted.');
             return redirect('admin/videos/trash');

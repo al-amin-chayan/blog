@@ -27,8 +27,6 @@
                             <tr>
                                 <th>S.No</th>
                                 <th> {{ trans('galleries.name') }} </th>
-                                <th> {{ trans('common.created_by') }} </th>
-                                <th> {{ trans('common.deleted_by') }} </th>
                                 <th> {{ trans('common.created_at') }} </th>
                                 <th> {{ trans('common.updated_at') }} </th>
                                 <th> {{ trans('common.deleted_at') }} </th>
@@ -36,14 +34,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{-- */$x=0;/* --}}
+                            @php $x=1; @endphp
                             @foreach($galleries as $item)
-                                {{-- */$x++;/* --}}
                                 <tr class="{{ $x%2 == 0 ? 'even' : 'odd'}} gradeA">
-                                    <td>{{ $x }}</td>
+                                    <td>{{ $x++ }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->creator->name }}</td>
-                                    <td>{{ $item->remover->name }}</td>
                                     <td>{{ $item->created_at->toDayDateTimeString() }}</td>
                                     <td>{{ $item->updated_at->format('M j, Y, g:ia') }}</td>
                                     <td>{{ $item->deleted_at->diffForHumans() }}</td>
@@ -52,7 +47,7 @@
                                             'url' => ['/admin/galleries/restore', $item->id],
                                             'style' => 'display:inline'
                                         ]) !!}
-                                        {!! Form::button('<span class="fa fa-undo" aria-hidden="true" title="Restore Tag" />', array(
+                                        {!! Form::button('<span class="fa fa-undo" aria-hidden="true" title="Restore Gallery" />', array(
                                                 'type' => 'submit',
                                                 'class' => 'btn btn-primary btn-xs',
                                                 'title' => 'Restore Gallery',
@@ -64,7 +59,7 @@
                                             'url' => ['/admin/galleries/clean', $item->id],
                                             'style' => 'display:inline'
                                         ]) !!}
-                                        {!! Form::button('<span class="glyphicon glyphicon-remove" aria-hidden="true" title="Delete Tag" />', array(
+                                        {!! Form::button('<span class="glyphicon glyphicon-remove" aria-hidden="true" title="Delete Gallery" />', array(
                                                 'type' => 'submit',
                                                 'class' => 'btn btn-danger btn-xs',
                                                 'title' => 'Delete Gallery',

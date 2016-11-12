@@ -75,6 +75,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('videos/trash', 'VideosController@trash');
         Route::post('videos/clean/{id}', 'VideosController@clean');
         Route::post('videos/restore/{id}', 'VideosController@restore');
+
+        Route::get('articles/trash', 'ArticlesController@trash');
+        Route::post('articles/clean/{id}', 'ArticlesController@clean');
+        Route::post('articles/restore/{id}', 'ArticlesController@restore');
     });
 
     Route::get('professions/users/{profession}', 'ProfessionsController@users');

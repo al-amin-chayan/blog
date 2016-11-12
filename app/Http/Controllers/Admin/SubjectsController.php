@@ -150,6 +150,7 @@ class SubjectsController extends Controller
         $subject = Subject::withTrashed()->findOrFail($id);
         try {
             $name = $subject->name;
+            $subject->views()->delete();
             $subject->forceDelete();
             Session::flash('message', $name . ' has been deleted.');
             return redirect('admin/subjects/trash');

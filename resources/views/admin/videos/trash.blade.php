@@ -28,8 +28,6 @@
                                 <th>S.No</th>
                                 <th> Videos </th>
                                 <th> {{ trans('videos.title') }} </th>
-                                <th> {{ trans('common.created_by') }} </th>
-                                <th> {{ trans('common.deleted_by') }} </th>
                                 <th> {{ trans('common.created_at') }} </th>
                                 <th> {{ trans('common.updated_at') }} </th>
                                 <th> {{ trans('common.deleted_at') }} </th>
@@ -37,11 +35,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{-- */$x=0;/* --}}
+                            @php $x=1; @endphp
                             @foreach($videos as $item)
-                                {{-- */$x++;/* --}}
                                 <tr class="{{ $x%2 == 0 ? 'even' : 'odd'}} gradeA">
-                                    <td>{{ $x }}</td>
+                                    <td>{{ $x++ }}</td>
                                     <td>
                                         <div class="embed-responsive embed-responsive-16by9">
                                             @if($item->provider === 'F')
@@ -54,8 +51,6 @@
                                         </div>
                                     </td>
                                     <td>{{ $item->title }}</td>
-                                    <td>{{ $item->creator->name }}</td>
-                                    <td>{{ $item->remover->name }}</td>
                                     <td>{{ $item->created_at->toDayDateTimeString() }}</td>
                                     <td>{{ $item->updated_at->format('M j, Y, g:ia') }}</td>
                                     <td>{{ $item->deleted_at->diffForHumans() }}</td>

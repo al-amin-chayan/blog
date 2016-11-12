@@ -26,7 +26,8 @@
                     <table class="table table-striped table-bordered table-hover" id="dataTables">
                         <thead>
                             <tr>
-                                <th>S.No</th><th> {{ trans('articles.subject_id') }} </th>
+                                <th>S.No</th>
+                                <th> {{ trans('articles.subject_id') }} </th>
                                 <th> {{ trans('articles.title') }} </th>
                                 <th> {{ trans('articles.sub_title') }} </th>
                                 <th>Actions</th>

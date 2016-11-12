@@ -118,8 +118,8 @@ class ProfessionsController extends Controller
      */
     public function trash()
     {
-        $types = UserType::onlyTrashed()->get();
-        return view('admin.professions.trash', compact('types'));
+        $professions = Profession::onlyTrashed()->get();
+        return view('admin.professions.trash', compact('professions'));
     }
 
     /**
@@ -131,11 +131,11 @@ class ProfessionsController extends Controller
      */
     public function restore($id)
     {
-        $type = UserType::withTrashed()->findOrFail($id);
+        $profession = Profession::withTrashed()->findOrFail($id);
         try {
-            $type_name = $type->type;
-            $type->restore();
-            Session::flash('message', $type_name . ' restored!');
+            $name = $profession->name;
+            $profession->restore();
+            Session::flash('message', $name . ' restored!');
             return redirect('admin/professions/trash');
         } catch (Exception $e) {
             return redirect()->back()
@@ -152,11 +152,12 @@ class ProfessionsController extends Controller
      */
     public function clean($id)
     {
-        $type = UserType::withTrashed()->findOrFail($id);
+        $profession = Profession::withTrashed()->findOrFail($id);
         try {
-            $type_name = $type->type;
-            $type->forceDelete();
-            Session::flash('message', $type_name . ' deleted!');
+            $name = $profession->name;
+            $profession->views()->delete();
+            $profession->forceDelete();
+            Session::flash('message', $name . ' deleted!');
             return redirect('admin/professions/trash');
         } catch (Exception $e) {
             return redirect()->back()

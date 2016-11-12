@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'user_id' => 'Author',
     'subject_id' => 'Subject',
     'title' => 'Title',
     'sub_title' => 'Sub Title',
