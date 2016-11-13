@@ -13,7 +13,7 @@ class CreateSubjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('Subjects', function (Blueprint $table) {
+        Schema::create('subjects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100)->unique();
             $table->text('description');
